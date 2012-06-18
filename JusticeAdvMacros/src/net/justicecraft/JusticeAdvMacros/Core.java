@@ -5,6 +5,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Core extends JavaPlugin{
+	// Create Logging Stuff
 	public final Logger log = Logger.getLogger("Minecraft");
 	public static String logPrefix = "[JCAdvMacro] ";
 	
