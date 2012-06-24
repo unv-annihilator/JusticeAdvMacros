@@ -33,19 +33,14 @@ public class Core extends JavaPlugin{
 		// Load up list of macros
 		if(folderBase.exists()){
 			if(folderBase.isDirectory()){
+				log.info(logPrefix + "Loading macros.");
 				for(File file : folderBase.listFiles()){
 					myExecutor.macros.add(file.getName());
 				}
 			}
 		} else {
+			log.info(logPrefix + "Creating folder.");
 			folderBase.mkdir();
-		}
-		
-		// Debug
-		if(myExecutor.macros.size() > 0){
-			for(Object m : myExecutor.macros){
-				log.info("Macro: "+ (String)m);
-			}
 		}
 	}
 }
