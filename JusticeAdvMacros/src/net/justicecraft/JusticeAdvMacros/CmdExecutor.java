@@ -1,5 +1,8 @@
 package net.justicecraft.JusticeAdvMacros;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,7 +11,8 @@ import org.bukkit.entity.Player;
 public class CmdExecutor implements CommandExecutor{
 	private Core plugin;
 	
-	private boolean firstLoad = true;
+	public boolean firstLoad = true;
+	public static List macros = new ArrayList<String>();
 	
 	public CmdExecutor(Core instance){
 		plugin = instance;

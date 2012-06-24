@@ -1,5 +1,6 @@
 package net.justicecraft.JusticeAdvMacros;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -13,6 +14,9 @@ public class Core extends JavaPlugin{
 	// Command handling
 	private CmdExecutor myExecutor;
 	
+	// File stuff
+	public static final File folderBase= new File( "plugins" + File.separator + "JusticeAdvMacros" );
+	
 	// On Disable
 	public void onDisable(){
 		log.info(logPrefix+" has been disabled.");
@@ -25,5 +29,23 @@ public class Core extends JavaPlugin{
 		
 		myExecutor = new CmdExecutor(this);
 		getCommand("macro").setExecutor(myExecutor);
+		
+		// Load up list of macros
+		if(folderBase.exists()){
+			if(folderBase.isDirectory()){
+				for(File file : folderBase.listFiles()){
+					myExecutor.macros.add(file.getName());
+				}
+			}
+		} else {
+			folderBase.mkdir();
+		}
+		
+		// Debug
+		if(myExecutor.macros.size() > 0){
+			for(Object m : myExecutor.macros){
+				log.info("Macro: "+ (String)m);
+			}
+		}
 	}
 }
