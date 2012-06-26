@@ -1,6 +1,8 @@
 package net.justicecraft.JusticeAdvMacros;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -13,6 +15,8 @@ public class Core extends JavaPlugin{
 	
 	// Command handling
 	private CmdExecutor myExecutor;
+	
+	public static List macros = new ArrayList<Macro>();
 	
 	// File stuff
 	public static final File folderBase= new File( "plugins" + File.separator + "JusticeAdvMacros" );
@@ -35,7 +39,10 @@ public class Core extends JavaPlugin{
 			if(folderBase.isDirectory()){
 				log.info(logPrefix + "Loading macros.");
 				for(File file : folderBase.listFiles()){
-					myExecutor.macros.add(file.getName());
+					myExecutor.macroNames.add(file.getName());
+					macros.add(new Macro(file.getName()));
+					// check for vars or lines
+					// add to macro class
 				}
 			}
 		} else {
