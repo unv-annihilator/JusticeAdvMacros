@@ -49,13 +49,13 @@ public class Core extends JavaPlugin{
 					try {
 						BufferedReader in = new BufferedReader(new FileReader(file));
 						String line;
-						log.info("File: "+file.getName());
 						while((line = in.readLine()) != null){
-							log.info(line);
 							if(line.startsWith("var: ")){
 								String[] temp = line.split(":");
 								if(temp.length > 1){
-									getMacro(file.getName()).setVars(Integer.parseInt(temp[1].trim()));
+									if(Integer.parseInt(temp[1].trim()) >= 0){
+										getMacro(file.getName()).setVars(Integer.parseInt(temp[1].trim()));
+									}
 								}
 							} else if(line.startsWith("/")){
 								getMacro(file.getName()).addLine(line);

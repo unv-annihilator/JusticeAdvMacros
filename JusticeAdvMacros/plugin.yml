@@ -7,12 +7,12 @@ commands:
   macro:
     description: Base command for macros
     usage: |
-       /macro create <name>
+       /macro create <macro name>
+       /macro edit <macro name>
        /macro set var <#>
-       /macro undo line
        /macro set line <line>
-       /macro save <name>
-       /macro delete <name>
+       /macro remove <line number>
+       /macro delete <macro name>
        /macro list
-       /macro list <name>
-       /macro <name>
+       /macro list <macro name>
+       /macro <macro name> [required vars]
