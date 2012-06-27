@@ -1,6 +1,10 @@
 package net.justicecraft.JusticeAdvMacros;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -42,12 +46,40 @@ public class Core extends JavaPlugin{
 					myExecutor.macroNames.add(file.getName());
 					macros.add(new Macro(file.getName()));
 					// check for vars or lines
-					// add to macro class
+					try {
+						BufferedReader in = new BufferedReader(new FileReader(file));
+						String line;
+						log.info("File: "+file.getName());
+						while((line = in.readLine()) != null){
+							log.info(line);
+							if(line.startsWith("var: ")){
+								String[] temp = line.split(":");
+								if(temp.length > 1){
+									getMacro(file.getName()).setVars(Integer.parseInt(temp[1].trim()));
+								}
+							} else if(line.startsWith("/")){
+								getMacro(file.getName()).addLine(line);
+							}
+						}
+						in.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		} else {
 			log.info(logPrefix + "Creating folder.");
 			folderBase.mkdir();
+		}
+	}
+	
+	public Macro getMacro(String name){
+		Macro result;
+		if(myExecutor.macroNames.contains(name)){
+			result = (Macro) macros.get(myExecutor.macroNames.indexOf(name));
+			return result;
+		} else {
+			return null;
 		}
 	}
 }

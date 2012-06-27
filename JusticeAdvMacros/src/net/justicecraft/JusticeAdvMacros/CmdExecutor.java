@@ -52,20 +52,18 @@ public class CmdExecutor implements CommandExecutor{
 							if(player.contains(p.getName())){
 								if(args[1].equalsIgnoreCase("var") || args[1].equalsIgnoreCase("vars")){
 									int vars = Integer.parseInt(args[2]);
-									// read from file
-
-									// if # vars already set, change
-									// else put as first line
-
-									// write
-								} else if (args[1].equalsIgnoreCase("line")) {
-									// read from file
-
-									// get new line to insert
-									for(int i = 2; i < args.length; i++){
-
+									if(vars >= 0){
+										plugin.getMacro((String)openMacro.get(player.indexOf(sender.getName()))).setVars(vars);
+									} else {
+										p.sendMessage(ChatColor.RED + "Number of variables must be positive.");
 									}
-									// write all to file
+								} else if (args[1].equalsIgnoreCase("line")) {
+									String line = "";
+									for(int i = 2; i < args.length; i++){
+										line += args[i];
+									}
+									line.trim();
+									plugin.getMacro((String)openMacro.get(player.indexOf(sender.getName()))).addLine(line);
 								}
 							} else {
 								p.sendMessage(ChatColor.RED + "No macro open, use /macro edit <name> to edit existing macro.");
@@ -79,8 +77,8 @@ public class CmdExecutor implements CommandExecutor{
 					if(args[0].equalsIgnoreCase("undo")){
 						// Add in checks for if there is a macro project open
 					}
-					// save
-					if(args[0].equalsIgnoreCase("save")){
+					// edit
+					if(args[0].equalsIgnoreCase("edit")){
 						
 					}
 					// list
