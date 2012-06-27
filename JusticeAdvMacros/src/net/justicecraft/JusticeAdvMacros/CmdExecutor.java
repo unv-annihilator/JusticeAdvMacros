@@ -97,9 +97,9 @@ public class CmdExecutor implements CommandExecutor{
 						// Removes line number given
 						if(args.length >= 2){
 							if(player.contains(p.getName())){
-								Macro tempMacro = plugin.getMacro((String)macroNames.get(player.indexOf(p.getName())));
+								Macro tempMacro = plugin.getMacro((String)openMacro.get(player.indexOf(p.getName())));
 								int lineNum = Integer.parseInt(args[1].trim());
-								if(tempMacro.getLines().size() >= lineNum){
+								if(tempMacro.getNumLines() >= lineNum){
 									tempMacro.removeLine(Integer.parseInt(args[1].trim()));
 									try {
 										tempMacro.saveMacro();
@@ -187,21 +187,35 @@ public class CmdExecutor implements CommandExecutor{
 						} else {
 							p.sendMessage(ChatColor.RED + "Unable to delete'"+args[1].toLowerCase()+"', macro not found!");
 						}
-						return true;
-					}
-					// perform
-					if(macroNames.contains(args[0].toLowerCase())){
-						Macro tempMacro = (Macro) plugin.macros.get(macroNames.indexOf(args[0].toLowerCase()));
-						if(tempMacro.getLines().size() > 0){
-							if((tempMacro.getVars() + 1) == args.length){
-								
-							} else if((tempMacro.getVars() + 1) > args.length){
-								p.sendMessage(ChatColor.RED+"Not enough variables provided!");
+						// perform
+						if(macroNames.contains(args[0].toLowerCase())){
+							Macro tempMacro = (Macro) plugin.macros.get(macroNames.indexOf(args[0].toLowerCase()));
+							if(tempMacro.getLines().size() > 0){
+								if((tempMacro.getVars() + 1) == args.length){
+									for(Object l : tempMacro.getLines()){
+										String line = (String)l;
+										// if line is command, run it as such
+										if(line.startsWith("/")){
+											line.replaceFirst("/", "");
+										} 
+										for(int i = 1; i <= tempMacro.getVars(); i++){
+											String check = "%";
+											check += i;
+											if(line.contains(check)){
+												line.replace(check, args[i].trim());
+											}
+										}
+										plugin.getServer().dispatchCommand(sender, line);
+									}
+								} else if((tempMacro.getVars() + 1) > args.length){
+									p.sendMessage(ChatColor.RED+"Not enough variables provided!");
+								} else {
+									p.sendMessage(ChatColor.RED+"Too many arguments passed!");
+								}
 							} else {
-								p.sendMessage(ChatColor.RED+"Too many arguments passed!");
+								p.sendMessage(ChatColor.RED+"Unable to execute macro '"+tempMacro.getName()+"'. No lines to execute!");
 							}
-						} else {
-							p.sendMessage(ChatColor.RED+"Unable to execute macro '"+tempMacro.getName()+"'. No lines to execute!");
+							return true;
 						}
 						return true;
 					}
@@ -226,9 +240,36 @@ public class CmdExecutor implements CommandExecutor{
 						}
 						return true;
 					}
+					// perform
+					if(macroNames.contains(args[0].toLowerCase())){
+						Macro tempMacro = (Macro) plugin.macros.get(macroNames.indexOf(args[0].toLowerCase()));
+						if(tempMacro.getLines().size() > 0){
+							if(tempMacro.getVars() == 0){
+								for(Object l : tempMacro.getLines()){
+									String line = (String)l;
+									// if line is command, run it as such
+									if(line.startsWith("/")){
+										line.replaceFirst("/", "");
+									} 
+									plugin.getServer().dispatchCommand(sender, line);
+								}
+							} else {
+								p.sendMessage(ChatColor.RED+"Not enough variables provided!");
+							}
+						} else {
+							p.sendMessage(ChatColor.RED+"Unable to execute macro '"+tempMacro.getName()+"'. No lines to execute!");
+						}
+						return true;
+					}
 				}
 			}
 		}		
 		return false;
+	}
+
+	public int getIndex(String name){
+		int result = -1;
+
+		return result;
 	}
 }

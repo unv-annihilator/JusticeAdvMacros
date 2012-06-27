@@ -32,7 +32,7 @@ public class Macro {
 	
 	public void removeLine(int i){
 		if(lines.size() >= i){
-			lines.remove(i);
+			lines.remove(i - 1);
 		}
 	}
 	
@@ -46,6 +46,10 @@ public class Macro {
 	
 	public List<String> getLines(){
 		return lines;
+	}
+	
+	public int getNumLines(){
+		return lines.size();
 	}
 	
 	public void saveMacro() throws IOException{
