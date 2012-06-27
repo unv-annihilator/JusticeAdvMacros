@@ -222,7 +222,7 @@ public class CmdExecutor implements CommandExecutor{
 				} else if(args.length == 1){
 					// list
 					if(args[0].equalsIgnoreCase("list")){
-						if(macroNames.size() >= 0){
+						if(macroNames.size() > 0){
 							String out = "";
 							int counter = 1;
 							for (Object m : macroNames){
